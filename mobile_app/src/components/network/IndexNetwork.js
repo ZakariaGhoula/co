@@ -23,7 +23,7 @@ import MenuTab from './../default/MenuTab';
 import NetworkFb from './../login/NetworkFb';
 import SearchBar from 'react-native-search-bar';
 import _                      from 'underscore';
-import NetworkProfilsFacebook from './../network/NetworkProfilsFacebook';
+import NetworkProfilsSearch from './../network/NetworkProfilsSearch';
 class IndexNetwork extends React.Component {
     constructor(props) {
         super(props);
@@ -237,7 +237,7 @@ class IndexNetwork extends React.Component {
                 style={{borderColor: '#c7c7c7', borderBottomWidth: 0, borderTopWidth: 0}}>
 
                 {Object.keys(this.props.new_suggestion_network).map(function (user, index) {
-                    return (<NetworkProfilsFacebook key={index} user={this.props.new_suggestion_network[user]}/>)
+                    return (<NetworkProfilsSearch key={index} user={this.props.new_suggestion_network[user]}/>)
                 }, this)}</View>;
         }
         else if (( this.state.list_default != null && this.state.list_default.length == 0) && this.props.search_follow_list == null) {
@@ -253,7 +253,7 @@ class IndexNetwork extends React.Component {
 
                 {this.props.search_follow_list.result.map(function (user, index) {
 
-                    return (<NetworkProfilsFacebook key={index} user={user}/>)
+                    return (<NetworkProfilsSearch key={index} user={user}/>)
                 }, this)}</View>;
         }
 

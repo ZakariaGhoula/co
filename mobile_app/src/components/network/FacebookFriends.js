@@ -19,7 +19,7 @@ import {connect}            from 'react-redux';
 import LoadingOverlay from 'react-native-loading-overlay';
 import NavigationBar from 'react-native-navbar';
 import MenuTab from './../default/MenuTab';
-import NetworkProfilsFacebook from './NetworkProfilsFacebook';
+import NetworkProfilsSearch from './NetworkProfilsSearch';
 import NetworkFb from './../login/NetworkFb';
 import SearchBar from 'react-native-search-bar';
 import _                      from 'underscore';
@@ -181,7 +181,7 @@ class FacebookFriends extends React.Component {
                 style={{borderColor: '#c7c7c7', borderBottomWidth: 0, borderTopWidth: 0}}>
 
                 {Object.keys(this.props.facebook_network).map(function (user, index) {
-                    return (<NetworkProfilsFacebook key={index} user={this.props.facebook_network[user]}/>)
+                    return (<NetworkProfilsSearch key={index} user={this.props.facebook_network[user]}/>)
                 }, this)}</View>;
         }
         return (

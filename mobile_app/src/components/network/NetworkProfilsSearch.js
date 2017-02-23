@@ -5,6 +5,7 @@ import {APIRoot} from '../../constants/config_path';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Actions} from 'react-native-redux-router';
 
+import {CachedImage} from "react-native-img-cache";
 export default class NetworkProfilsSearch extends React.Component {
     constructor(props) {
         super(props);
