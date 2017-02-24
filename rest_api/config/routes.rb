@@ -41,6 +41,7 @@ Rails.application.routes.draw do
       get '/recipes/token', :to => 'recipe#get_list_recipes_by_token'
       get '/recipes/token/refresh', :to => 'recipe#get_list_recipes_by_token_refresh'
       get '/recipes/postby', :to => 'user#get_user_poster_recipe'
+      get '/recipes/number', :to => 'recipe#get_number_recipe'
       get '/recipes/images', :to => 'recipe#retrieve_image_recipe'
       get '/recipes/processing', :to => 'recipe#get_processing_recepie'
       post '/recipes/add', :to => 'recipe#add_recipe'

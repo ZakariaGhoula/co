@@ -19,6 +19,7 @@ import * as SessionActions    from './../../actions/SessionActions';
 import * as RecipeActions    from './../../actions/RecipeActions';
 import {connect}            from 'react-redux';
 
+import LoadingOverlay from 'react-native-loading-overlay';
 import NavigationBar from 'react-native-navbar';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MenuTab from './../default/MenuTab';
@@ -27,7 +28,6 @@ import ShowLevel from './showLevel';
 import UpdateBasics from './updateBasics';
 import ShowFollower from './showFollower';
 import MyRecipes from './myrecipes';
-import Loading from './../default/Loading'
 import {GoogleAnalyticsTracker} from 'react-native-google-analytics-bridge';
 class Moncookout extends React.Component {
     constructor(props) {
@@ -71,21 +71,21 @@ class Moncookout extends React.Component {
         if (typeof this.props.from_delete !== "undefined" && this.props.from_delete) {
             this.props.actions_recipe.retrieveMyRecipesRefresh(this.props.token);
         }
-        if (this.props.user == null) {
-            this.props.actions.retrieveDataRequest(this.props.token);
-        }
-
     }
 
     componentDidMount() {
+
+
+        if (this.props.user == null) {
+            this.props.actions.retrieveDataRequest(this.props.token);
+        }
         if (this.props.token != null) {
             // if (this.props.my_recipes == null)
-            //this.props.actions_recipe.retrieveMyRecipes(this.props.token);
+            this.props.actions_recipe.retrieveMyRecipes(this.props.token);
 
-            this.props.actions.retrieveMyNetwork(this.props.token);
-
-           this.props.actions_recipe.getNumberMyRecipe(this.props.token);
+                this.props.actions.retrieveMyNetwork(this.props.token);
         }
+
 
     }
 
@@ -156,7 +156,7 @@ class Moncookout extends React.Component {
 
     componentWillUpdate(nextProps, nextState) {
 
-/*
+
         if (nextState.isRefreshing && nextProps.my_recipes != null) {
             this.setState({isRefreshing: false})
         }
@@ -166,7 +166,13 @@ class Moncookout extends React.Component {
         }
         if (nextState.profile_updated && nextProps.user != this.props.user) {
             var img = null;
+            /* if (nextState.img_partiel == null) {
+             img = (nextProps.user != null && nextProps.user.media != null && nextProps.user.media.profile_pi != "") ? APIRoot + "/images/users/" + nextProps.user.media.profile_pi : ( (nextState.img != null) ? nextState.img : null);
 
+             }
+             else {
+             img = nextState.img_partiel;
+             }*/
             this.setState({
                 profile_updated: false,
                 first_name: (nextProps.user != null) ? nextProps.user.first_name : null,
@@ -178,7 +184,10 @@ class Moncookout extends React.Component {
                 //img: img
             })
         }
-*/
+        /*if (nextProps.token != null && nextProps.user!==null) {
+         nextProps.actions_recipe.retrieveMyRecipes(nextProps.token);
+         nextProps.actions.retrieveMyNetwork(nextProps.token);
+         }*/
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -197,15 +206,17 @@ class Moncookout extends React.Component {
             nextState.first_name !== this.state.first_name ||
             nextState.updated !== this.state.updated ||
             nextProps.isRequesting !== this.props.isRequesting ||
-            ( nextProps.count_recipe !== this.props.count_recipe) ||
+            nextProps.my_recipes !== this.props.my_recipes ||
             nextProps.my_network !== this.props.my_network
         )
     }
-
+/*
     menuLeft(e) {
-        Actions.indexNetwork();
+        this.refreshing();
     }
-
+*/menuLeft(e) {
+    Actions.indexNetwork();
+}
     refreshing(e) {
         this.setState({isRefreshing: true});
         this.props.actions_recipe.retrieveMyRecipesRefresh(this.props.token);
@@ -249,29 +260,29 @@ class Moncookout extends React.Component {
         var leftButtonConfig = <TouchableOpacity style={{paddingLeft: 13, paddingRight: 13, paddingTop: 10}}
                                                  onPress={this.menuLeft.bind(this)}><Icon size={29}
                                                                                           name="ios-refresh"/></TouchableOpacity>;
-        var leftButtonConfig = <TouchableOpacity style={{marginTop: -16, marginLeft: 10}} onPress={this.menuLeft}><Image
-            style={{marginTop: 0, width: 24}} resizeMode={"contain"}
+        var leftButtonConfig = <TouchableOpacity style={{marginTop:-16,marginLeft:10}} onPress={this.menuLeft}><Image
+            style={{marginTop:0,width:24}} resizeMode={"contain"}
             source={require('image!./../../img/sharing/add-user.png')}/></TouchableOpacity>
 
 
-        if ((this.props.user == null )) {
+        if ((this.props.user == null || this.props.my_recipes == null )) {
             return (
                 <View style={styles.bg}>
+
+                    <NavigationBar
+                        style={styles.navbar}
+                        statusBar={{style: 'default', hidden: false, tintColor: "white", color: "#000"}}
+                        title={titleConfig}
+                        tintColor={"#fff"}/>
                     <Image source={require('image!./../../img/background/default/tapis.png')}
                            style={{flex: 1, height: null, width: null}}>
-
-                        <NavigationBar
-                            style={styles.navbar}
-                            statusBar={{style: 'default', hidden: false, tintColor: "white", color: "#000"}}
-                            title={titleConfig}
-                            tintColor={"#fff"}/>
-                        <Loading/>
-
-
-                        <View style={{position: "absolute", bottom: 0, left: 0, right: 0}}>
-                            <MenuTab option_back={this.props.name} page={this.props.name}/>
-                        </View>
+                        <View style={{flex: 1, justifyContent: 'center', width: null, height: null}}>
+                            <LoadingOverlay visible={true} text=""/>
+                     </View>
                     </Image>
+                    <View style={{position: "absolute", bottom: 0, left: 0, right: 0}}>
+                        <MenuTab option_back={this.props.name} page={this.props.name}/>
+                    </View>
                 </View>)
         }
         return (
@@ -287,7 +298,6 @@ class Moncookout extends React.Component {
                         leftButton={leftButtonConfig}
                         statusBar={{style: 'default', hidden: false, tintColor: "white", color: "#000"}}
                         tintColor={"#fff"}/>
-
                     <ScrollView
 
                         refreshControl={
@@ -345,18 +355,27 @@ class Moncookout extends React.Component {
 
                             </View>
                             <View style={{flex: 0.6, flexDirection: 'column'}}>
-                                {this.props.count_recipe != null
+                                {this.props.my_recipes != null
                                 && this.props.user != null
-                                && this.props.my_network != null && typeof this.props.count_recipe!=="undefined" &&
-                                <ShowFollower id_user={this.props.user.id} nbr_recipe={this.props.count_recipe}
+                                && this.props.my_network != null &&
+                                <ShowFollower id_user={this.props.user.id} my_recipes={this.props.my_recipes}
                                               my_network={this.props.my_network}/>}
-                                {this.props.count_recipe != null &&  typeof this.props.count_recipe!=="undefined" &&
-                                <ShowLevel nbr_recipe={this.props.count_recipe}/>}
+                                {this.props.my_recipes != null &&
+                                <ShowLevel my_recipes={this.props.my_recipes}/>}
 
 
                             </View>
 
                         </View>
+
+                        {this.props.my_recipes != null && this.props.user != null && !this.state.deleteimg &&
+                        <MyRecipes user={this.props.user} delete_recipe={this.deleteRecipe.bind(this)}
+                                   my_recipes={this.props.my_recipes}/>}
+                        {this.props.my_recipes != null && this.props.user != null && this.state.deleteimg &&
+                        <View style={{flex: 1, justifyContent: 'center', width: null, height: null}}>
+                        <LoadingOverlay visible={true} text=""/>
+                        </View>
+                        }
                     </ScrollView>
                     <View style={{position: "absolute", bottom: 0, left: 0, right: 0}}>
                         <MenuTab option_back={this.props.name} page={this.props.name}/>
@@ -372,7 +391,7 @@ const mapStateToProps = (state) => ({
     token: state.session.token,
     statusText: state.session.statusText,
     user: state.session.user,
-    count_recipe: state.recipe.count_recipe,
+    my_recipes: state.recipe.my_recipes,
     my_network: state.session.my_network,
     isRequesting: state.loading.shown
 });

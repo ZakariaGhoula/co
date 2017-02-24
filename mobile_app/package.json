@@ -25,6 +25,7 @@
     "react-native-cacheable-image": "^1.5.1",
     "react-native-carousel": "^0.8.0",
     "react-native-check-file-exists-ios": "^0.2.2",
+    "react-native-circular-progress": "0.0.8",
     "react-native-dropdown": "0.0.6",
     "react-native-easy-grid": "^0.1.6",
     "react-native-effects-view": "^0.3.0",

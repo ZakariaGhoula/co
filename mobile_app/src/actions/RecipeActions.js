@@ -2,6 +2,37 @@ import { checkHttpStatus, parseJSON } from './../utils/index';
 import { RecipeConstants } from './../constants/RecipeConstant';
 
 
+export function getNumberMyRecipe(token) {
+    const p = getNumberMyRecipeAjax(token);
+
+    return {
+        type: [RecipeConstants.ActionTypes.GET_NUMBER_MY_RECIPES_REQUEST, RecipeConstants.ActionTypes.GET_NUMBER_MY_RECIPES_SUCCESS, RecipeConstants.ActionTypes.GET_NUMBER_MY_RECIPES_FAILURE],
+        promise: p,
+    }
+}
+export function getNumberMyRecipeAjax(token) {
+
+
+    //--- informer le reducer que nous sommes en cours de login
+    return fetch(RecipeConstants.APIEndpoints.GET_NUMBER_MY_RECIPES, {
+
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Token token="' + token + '"'
+        },
+
+    })
+        .then(parseJSON)
+        .then(response => {
+            return response
+        })
+}
+
+
+
 export function addRecipe(token, data) {
     const p = addRecipeAjax(token, data);
 

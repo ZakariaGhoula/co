@@ -17,8 +17,7 @@ export default class ShowFollower extends React.Component {
         var {height, width} = Dimensions.get('window');
 
 
-        var nbr_recipes =  (this.props.nbr_recipe==null)?0:this.props.nbr_recipe;
-
+        var nbr_recipes = Object.keys(this.props.my_recipes).length;
         var nbr_followers = Object.keys(this.props.my_network.followers).length;
         var nbr_abos = Object.keys(this.props.my_network.abos).length;
         var id_user = this.props.id_user;

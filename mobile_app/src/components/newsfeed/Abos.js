@@ -314,8 +314,10 @@ class Abos extends React.Component {
                                 initialListSize={5}
                                 dataSource={this.state.data_to_show}
                                 renderRow={this.renderRowView.bind(this)}
-
+                                scrollRenderAheadDistance={60}
+                                onEndReachedThreshold={60}
                                 enableEmptySections={true}
+                                removeClippedSubviews={true}
                                 onEndReached={this.onFetch.bind(this)}
                             >
 

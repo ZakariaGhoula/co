@@ -10,7 +10,8 @@ import * as SessionActions    from './../actions/SessionActions';
 import * as NewsfeedActions    from './../actions/NewsfeedActions';
 import {connect}            from 'react-redux';
 import _                      from 'underscore';
-import LoadingOverlay from 'react-native-loading-overlay';
+
+import Loading from './default/Loading'
 import {GoogleAnalyticsTracker} from 'react-native-google-analytics-bridge';
 class Start extends React.Component {
     constructor(props) {
@@ -133,7 +134,7 @@ class Start extends React.Component {
                 <Image source={require('image!./../../img/background/default/tapis.png')}
                        style={{flex:1,width:null,
                            justifyContent:'center',height:null,padding:padding}}>
-                    <LoadingOverlay visible={true} text=""/>
+                    <Loading/>
                 </Image>
 
             </View>

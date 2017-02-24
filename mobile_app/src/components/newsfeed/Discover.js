@@ -320,13 +320,16 @@ class Discover extends React.Component {
                                 />
                             }
 
-                            pageSize={5}
 
-                            initialListSize={5}
+
+                            enableEmptySections={true}
+                            removeClippedSubviews={true}
+                            pageSize={1}
+                            initialListSize={1}
+
                             dataSource={this.state.data_to_show}
                             renderRow={this.renderRowView.bind(this)}
 
-                            enableEmptySections={true}
                             onEndReached={this.onFetch.bind(this)}
                         >
 

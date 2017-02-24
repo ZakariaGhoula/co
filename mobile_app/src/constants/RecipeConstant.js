@@ -8,6 +8,7 @@ export const RecipeConstants = {
 
     APIEndpoints: {
         GET_POSTER_RECIPE: APIRoot + "/v1/recipes/postby",
+        GET_NUMBER_MY_RECIPES: APIRoot + "/v1/recipes/number",
         ADD_RECIPE: APIRoot + "/v1/recipes/add",
         ADD_RECEPIE_TITLE: APIRoot + "/v1/recipes/add/title",
         ADD_RECEPIE_EXIST_TITLE: APIRoot + "/v1/recipes/add_recipe_exist_title",
@@ -35,6 +36,11 @@ export const RecipeConstants = {
 
     ActionTypes: keyMirror({
         // add recipe
+        GET_NUMBER_MY_RECIPES_REQUEST: null,
+        GET_NUMBER_MY_RECIPES_FAILURE: null,
+        GET_NUMBER_MY_RECIPES_SUCCESS: null,
+
+
         ADD_RECIPE_REQUEST: null,
         ADD_RECIPE_FAILURE: null,
         ADD_RECIPE_SUCCESS: null,

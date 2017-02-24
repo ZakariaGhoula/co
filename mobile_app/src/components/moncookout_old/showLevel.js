@@ -45,8 +45,8 @@ export default class ShowLevel extends React.Component {
         });
         var knifePicture = null;
 
-        var nbr_recipes =  (this.props.nbr_recipe==null)?0:this.props.nbr_recipe;
-        if(nbr_recipes==0 || nbr_recipes==null)
+        var nbr_recipes = Object.keys(this.props.my_recipes).length;
+        if(nbr_recipes==0)
         knifePicture = <Image
             source={require('image!./../../img/moncookout/knife/couteaux_0.png')}/>;
 
