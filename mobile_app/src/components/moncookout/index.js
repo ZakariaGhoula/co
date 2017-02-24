@@ -19,6 +19,8 @@ import * as SessionActions    from './../../actions/SessionActions';
 import * as RecipeActions    from './../../actions/RecipeActions';
 import {connect}            from 'react-redux';
 
+import {AsyncStorage} from 'react-native';
+import Storage from 'react-native-storage';
 import NavigationBar from 'react-native-navbar';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MenuTab from './../default/MenuTab';
@@ -29,6 +31,7 @@ import ShowFollower from './showFollower';
 import MyRecipes from './myrecipes';
 import Loading from './../default/Loading'
 import {GoogleAnalyticsTracker} from 'react-native-google-analytics-bridge';
+
 class Moncookout extends React.Component {
     constructor(props) {
         super(props);
@@ -44,7 +47,8 @@ class Moncookout extends React.Component {
             level: (this.props.user != null) ? this.props.user.level : null,
             img_64: null,
             img: (this.props.user != null && this.props.user.media != null && this.props.user.media.profile_pi != "") ? APIRoot + "/images/users/" + this.props.user.media.profile_pi : null,
-            img_partiel: null
+            img_partiel: null,
+            list_recipes: null
         }
         this.menuLeft = this.menuLeft.bind(this);
         this.refreshing = this.refreshing.bind(this);
@@ -79,12 +83,12 @@ class Moncookout extends React.Component {
 
     componentDidMount() {
         if (this.props.token != null) {
-            // if (this.props.my_recipes == null)
-            //this.props.actions_recipe.retrieveMyRecipes(this.props.token);
+            //      if (this.props.my_recipes == null)
+            //   this.props.actions_recipe.retrieveMyRecipes(this.props.token);
 
             this.props.actions.retrieveMyNetwork(this.props.token);
 
-           this.props.actions_recipe.getNumberMyRecipe(this.props.token);
+            this.props.actions_recipe.getNumberMyRecipe(this.props.token);
         }
 
     }
@@ -94,8 +98,8 @@ class Moncookout extends React.Component {
     }
 
     componentWillUnmount(nextProps, nextState) {
-        // this.props.actions.destroy_cookout();
-        // this.props.actions_recipe.destroy_cookout();
+        this.props.actions.destroy_cookout();
+        this.props.actions_recipe.destroy_cookout();
     }
 
     deleteRecipe(id) {
@@ -156,7 +160,7 @@ class Moncookout extends React.Component {
 
     componentWillUpdate(nextProps, nextState) {
 
-/*
+
         if (nextState.isRefreshing && nextProps.my_recipes != null) {
             this.setState({isRefreshing: false})
         }
@@ -178,7 +182,48 @@ class Moncookout extends React.Component {
                 //img: img
             })
         }
-*/
+        if (!nextProps.isRequesting && nextProps.my_recipes == null && nextProps.count_recipe !== null) {
+            global.storage.load({
+                key: 'moncookout',
+            }).then(ret => {
+
+                // found data goes to then()
+                if (typeof ret.data !== "undefined" && ret.data !== null && Object.keys(ret.data).length == nextProps.count_recipe) {
+                    this.setState({
+                        list_recipes: ret.data,
+
+                    })
+                }
+
+
+                else {
+                    this.props.actions_recipe.retrieveMyRecipes(this.props.token);
+                }
+
+            }).catch(err => {
+                this.props.actions_recipe.retrieveMyRecipes(this.props.token);
+            });
+        }
+        else if (!nextProps.isRequesting && nextProps.my_recipes != null && nextProps.count_recipe !== null) {
+            storage.save({
+                key: 'moncookout',   // Note: Do not use underscore("_") in key!
+                rawData: {
+                    from: 'Cookout',
+                    token: nextProps.token,
+                    data: nextProps.my_recipes
+                },
+
+                // if not specified, the defaultExpires will be applied instead.
+                // if set to null, then it will never expire.
+                expires: null
+            });
+            this.setState({
+                list_recipes: nextProps.my_recipes,
+
+            })
+        }
+
+
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -190,6 +235,7 @@ class Moncookout extends React.Component {
             nextState.img !== this.state.img ||
             nextState.last_name !== this.state.last_name ||
             nextState.age !== this.state.age ||
+            nextState.list_recipes !== this.state.list_recipes ||
             nextState.sexe !== this.state.sexe ||
             nextState.level !== this.state.level ||
             nextState.deleteimg !== this.state.deleteimg ||
@@ -198,6 +244,7 @@ class Moncookout extends React.Component {
             nextState.updated !== this.state.updated ||
             nextProps.isRequesting !== this.props.isRequesting ||
             ( nextProps.count_recipe !== this.props.count_recipe) ||
+            ( nextProps.my_recipes !== this.props.my_recipes) ||
             nextProps.my_network !== this.props.my_network
         )
     }
@@ -347,16 +394,20 @@ class Moncookout extends React.Component {
                             <View style={{flex: 0.6, flexDirection: 'column'}}>
                                 {this.props.count_recipe != null
                                 && this.props.user != null
-                                && this.props.my_network != null && typeof this.props.count_recipe!=="undefined" &&
+                                && this.props.my_network != null && typeof this.props.count_recipe !== "undefined" &&
                                 <ShowFollower id_user={this.props.user.id} nbr_recipe={this.props.count_recipe}
                                               my_network={this.props.my_network}/>}
-                                {this.props.count_recipe != null &&  typeof this.props.count_recipe!=="undefined" &&
+                                {this.props.count_recipe != null && typeof this.props.count_recipe !== "undefined" &&
                                 <ShowLevel nbr_recipe={this.props.count_recipe}/>}
 
 
                             </View>
 
                         </View>
+                        {this.state.list_recipes != null && this.props.user != null && !this.state.deleteimg &&
+                        <MyRecipes user={this.props.user} delete_recipe={this.deleteRecipe.bind(this)}
+                                   my_recipes={this.state.list_recipes}/>}
+
                     </ScrollView>
                     <View style={{position: "absolute", bottom: 0, left: 0, right: 0}}>
                         <MenuTab option_back={this.props.name} page={this.props.name}/>
@@ -373,6 +424,8 @@ const mapStateToProps = (state) => ({
     statusText: state.session.statusText,
     user: state.session.user,
     count_recipe: state.recipe.count_recipe,
+
+    my_recipes: state.recipe.my_recipes,
     my_network: state.session.my_network,
     isRequesting: state.loading.shown
 });

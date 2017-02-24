@@ -51,6 +51,8 @@ class RecipeVisitor extends React.Component {
         if (this.props.user == null) {
             this.props.actions.retrieveDataRequest(this.props.token);
         }
+
+        this.props.actions_recipe.getNumberMyRecipe(this.props.token);
         if (this.props.token != null && this.props.id_recipe != null) {
             //this.props.actions_recipe.retrieveMyRecipe(this.props.token, this.props.id_recipe);
         }
@@ -97,7 +99,9 @@ class RecipeVisitor extends React.Component {
             nextState.thumbnailOpacity !== this.state.thumbnailOpacity ||
             nextState.thumbnailMain !== this.state.thumbnailMain ||
 
-            nextProps.user !== this.props.user/* ||
+            nextProps.user !== this.props.user
+
+            || nextProps.count_recipe !== this.props.count_recipe/* ||
              nextProps.my_recipe !== this.props.my_recipe*/
         )
     }
@@ -317,7 +321,7 @@ class RecipeVisitor extends React.Component {
 
         if (this.state.position == 3) {
             if (this.props.last_recipe != null) {
-                var nbr_recipes = this.state.nbr_recipe;
+                var nbr_recipes = this.props.count_recipe;
                 var knifePicture = null;
                 var text_knife = null;
                 var text_knife2 = null;
@@ -652,6 +656,7 @@ const mapStateToProps = (state) => ({
     user_external: state.visitor.profile_visitor,
     isRequesting: state.loading.shown,
 
+    count_recipe: state.recipe.count_recipe,
     my_recipes: state.recipe.my_recipes
 });
 

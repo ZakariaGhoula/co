@@ -15,7 +15,7 @@ import {GoogleAnalyticsTracker} from 'react-native-google-analytics-bridge';
 import _                      from 'underscore';
 import Storage from 'react-native-storage'
 
-import LoadingOverlay from 'react-native-loading-overlay';
+import Loading from './../default/Loading'
 
 import NavigationBar from 'react-native-navbar';
 import MenuTab from './../default/MenuTab';
@@ -59,7 +59,7 @@ class AddRecipe extends React.Component {
     }
     componentDidMount() {
 
-
+        this.props.actions_recipe.getNumberMyRecipe(this.props.token);
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -105,6 +105,7 @@ class AddRecipe extends React.Component {
             || this.props.form_skiped !== nextProps.form_skiped
             || this.props.last_recipe !== nextProps.last_recipe
             || this.state.nbr_recipe !== nextState.nbr_recipe
+            || this.props.count_recipe !== nextProps.count_recipe
             || this.props.processing_recepie !== nextProps.processing_recepie
 
         );
@@ -287,7 +288,7 @@ class AddRecipe extends React.Component {
             bravo = <View style={[styles.bravoControler,{backgroundColor:"transparent"}]}>
                 <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
 
-                    <LoadingOverlay visible={true} text=""/>
+                    <Loading  />
 
 
                 </View>
@@ -302,7 +303,7 @@ class AddRecipe extends React.Component {
          <Icon name="ios-close" size={50} color="#000" backgroundColor="transparent"/>
          </TouchableHighlight>*/
         if (this.state.to_show == 7) {
-            var nbr_recipes = this.state.nbr_recipe;
+            var nbr_recipes = this.props.count_recipe;
             var knifePicture = null;
             var text_knife = null;
             var text_knife2 = null;
@@ -500,6 +501,7 @@ const mapStateToProps = (state) => ({
     last_recipe: state.recipe.last_recipe,
     processing_recepie: state.recipe.processing_recepie,
     my_recipes: state.recipe.my_recipes,
+    count_recipe: state.recipe.count_recipe,
 
 });
 

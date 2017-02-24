@@ -122,7 +122,7 @@ backgroundColor:"transparent",
                     {button}
                     {number}
                 </View>
-                {this.props.isRequesting &&   <LoadingOverlay visible={true} text=""/>}
+
 
 
             </View>

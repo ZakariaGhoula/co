@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import {View,Text,StyleSheet,Linking} from 'react-native';
+import {View,Text,StyleSheet,Linking,TouchableOpacity} from 'react-native';
 export default class About extends React.Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
+        this.extractDomain = this.extractDomain.bind(this);
     }
     handleClick = (url) => {
 
@@ -15,6 +16,29 @@ export default class About extends React.Component {
             }
         });
     }
+    extractDomain(url) {
+        var domain;
+        //find & remove protocol (http, ftp, etc.) and get domain
+        if (url.indexOf("://") > -1) {
+            domain = url.split('/')[2];
+        }
+        else {
+            domain = url.split('/')[0];
+        }
+
+        //find & remove port number
+        domain = domain.split(':')[0];
+
+        return domain;
+    }
+
+
+    menuLeft(e) {
+        Actions.pop();
+        // this.setState({isOpen: !this.state.isOpen});
+    }
+
+
 
     render() {
 
@@ -113,7 +137,7 @@ export default class About extends React.Component {
 
                     <View style={styles.linkView}>
                         <View style={styles.TextView}>
-                            <Text style={styles.textlocale}>Grâce à l'ajout de tags correspondant à votre manière de cuisiner et de manger, retrouvez toutes vos recettes en quelques secondes dans votre espace Mon Cook Out. Vos recettes peuvent être publiques (visibles par votre réseau) ou privées (visible seulement par vous).
+                            <Text style={styles.textlocale}>Grâce à l'ajout de tags correspondant à votre manière de cuisiner et de manger, retrouvez toutes vos recettes en quelques secondes dans votre espace Mon Cook Out. Vos recettes peuvent être publiques (visibles par votre réseau) ou privées (visibles seulement par vous).
                             </Text>
                         </View>
                     </View>
@@ -144,7 +168,9 @@ export default class About extends React.Component {
                     </View>
                     <View style={styles.linkView}>
                         <View style={styles.TextView}>
-                            <Text style={styles.textlocale}>Facebook : https://www.facebook.com/CookOut-1172743309455530/?ref=aymt_homepage_panel</Text>
+                             <TouchableOpacity
+
+                                onPress={this.handleClick.bind(this,'https://www.facebook.com/CookOut-1172743309455530')}><Text  style={styles.textlocale}>Facebook : https://www.facebook.com/CookOut-1172743309455530</Text></TouchableOpacity>
                         </View>
                     </View>
                     <View style={styles.linkView}>

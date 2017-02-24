@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Text,View,Image,StyleSheet,Dimensions} from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import GiftedSpinner from 'react-native-gifted-spinner';
 export default class Loading extends React.Component {
     constructor(props) {
         super(props);
@@ -40,14 +41,7 @@ export default class Loading extends React.Component {
         return (
 
             <View style={styles.bg}>
-                <AnimatedCircularProgress
-                    size={45    }
-                    width={3}
-                    linecap={"round"}
-                    fill={90}
-                    prefill={80}
-                    tintColor="#F9690E"
-                    backgroundColor="#3d5875" />
+                <GiftedSpinner size={"large"}/>
             </View>
 
 

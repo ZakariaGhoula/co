@@ -236,7 +236,7 @@ export default class UpdateBasics extends React.Component {
 
         if (this.state.img != null) {
 
-            var profilePicture = <CachedImage source={{uri:this.state.img}}
+            var profilePicture = <Image source={{uri:this.state.img}}
                                         style={styles.pict} mutable/>
 
         }
@@ -268,25 +268,24 @@ export default class UpdateBasics extends React.Component {
                 value={this.state.last_name} defaultValue={this.state.last_name}/></View>
         }
         let index = 0;
-        var data = [];
+        var data_sexe = [];
         OPTIONS_CIVILITE.map(function (civilite, i) {
             var value = {key: civilite.value, label: civilite.label}
-            data.push(value);
+            data_sexe.push(value);
         });
         var sexe = null;
-
         sexe = <View
             style={{paddingBottom:4,flexDirection:'row', marginBottom:7,marginTop:10,height:20,borderBottomWidth:1,backgroundColor:"transparent",borderColor:"#000"}}><ModalPicker
-            data={data}
+            data={data_sexe}
             style={{marginTop:0,flex:0.7}}
-            selectStyle={styles.selectStyle}
-
+            selectStyle={[styles.selectStyle,{height:100}]}
+            optionStyle={{height:40,marginBottom:4}}
             selectTextStyle={styles.selectTextStyle}
             cancelTextStyle={styles.cancelTextStyle}
             optionTextStyle={styles.optionTextStyle}
             initValue={this.state.sexe}
             cancelText="Annuler"
-            onChange={(option)=>{   this.props.updateDataBasicSexe(option.key);this.setState({sexe_value: option.key,sexe:option.label}) }}/><Icon
+            onChange={(option)=>{   console.log(option);this.props.updateDataBasicSexe(option.key);this.setState({sexe_value: option.key, sexe:option.label}) }}/><Icon
             name="ios-arrow-down" style={{
                 backgroundColor:"transparent"}} size={12}/></View>;
 
@@ -301,7 +300,7 @@ export default class UpdateBasics extends React.Component {
             style={{paddingBottom:4,flexDirection:'row', marginBottom:7,marginTop:10,height:20, backgroundColor:"transparent",borderBottomWidth:1,borderColor:"#000"}}><ModalPicker
             data={data_age}
             style={{marginTop:0,flex:0.7}}
-            selectStyle={[styles.selectStyle,{height:300}]}
+            selectStyle={[styles.selectStyle,{height:500}]}
             optionStyle={{height:40}}
             selectTextStyle={styles.selectTextStyle}
             cancelTextStyle={styles.cancelTextStyle}
@@ -319,6 +318,7 @@ export default class UpdateBasics extends React.Component {
             var value = {key: level.value, label: level.label}
             data_level.push(value);
         });
+
         level = <View
             style={{paddingBottom:4,flexDirection:'row',  backgroundColor:"transparent",marginBottom:7,marginTop:10,borderBottomWidth:1,borderColor:"#000"}}><ModalPicker
             data={data_level}

@@ -13,7 +13,7 @@ import Storage from 'react-native-storage'
 import LoadingOverlay from 'react-native-loading-overlay';
 import NavigationBar from 'react-native-navbar';
 import MenuTab from './../default/MenuTab';
-
+import Loading from './../default/Loading'
 import Title from './title';
 import MenuChoice from './menuChoice';
 import Tags from './tags';
@@ -78,6 +78,7 @@ class AddRecipeExist extends React.Component {
         let tracker1 = new GoogleAnalyticsTracker('UA-87778327-1');
         tracker1.trackScreenView('Ajout  Recette Existante Page');
         this.props.actions_recipe.retrieveImagesRecipe(this.props.token, this.props.recepie.id_recipe);
+        this.props.actions_recipe.getNumberMyRecipe(this.props.token);
 
     }
 
@@ -135,6 +136,7 @@ class AddRecipeExist extends React.Component {
             || this.props.last_recipe !== nextProps.last_recipe
             || this.props.list_images_recipe !== nextProps.list_images_recipe
             || this.props.processing_recepie !== nextProps.processing_recepie
+            || this.props.count_recipe !== nextProps.count_recipe
 
         );
     }
@@ -305,7 +307,7 @@ class AddRecipeExist extends React.Component {
             bravo = <View style={[styles.bravoControler,{backgroundColor:"transparent"}]}>
                 <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
 
-                    <LoadingOverlay visible={true} text=""/>
+                    <Loading/>
 
 
                 </View>
@@ -313,7 +315,7 @@ class AddRecipeExist extends React.Component {
         }
         if (this.state.to_show == 7) {
             if (this.props.processing_recepie != null) {
-                var nbr_recipes = (this.state.nbr_recipes);
+                var nbr_recipes = (this.props.count_recipe);
                 var knifePicture = null;
                 var text_knife = null;
                 var text_knife2 = null;
@@ -509,6 +511,7 @@ const mapStateToProps = (state) => ({
     my_recipes: state.recipe.my_recipes,
     list_images_recipe: state.recipe.list_images_recipe,
 
+    count_recipe: state.recipe.count_recipe,
     processing_recepie: state.recipe.processing_recepie
 });
 

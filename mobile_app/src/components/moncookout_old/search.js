@@ -46,8 +46,11 @@ export default class Search extends React.Component {
         if (recipes != null ) {
 
             for (var i in recipes) {
+
+
                 var list_tags = recipes[i].tags;
                 if (recipes[i].title.toLowerCase().includes(text.toLowerCase())) {
+
                     retour_list.push(recipes[i])
                 }
                 for (var j in list_tags) {
@@ -56,13 +59,14 @@ export default class Search extends React.Component {
                     }
                 }
 
+
             }
             this.setState({search: text, close: (text.trim().length > 0)})
-
+            retour_list = _.uniq(retour_list);
+            this.props.updateRecipe(retour_list);
         }
 
-        retour_list = _.uniq(retour_list);
-        this.props.updateRecipe(retour_list);
+
     }
 
     handleSearch(text) {

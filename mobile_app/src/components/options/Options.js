@@ -151,7 +151,7 @@ class Options extends React.Component {
 
                                     <OptionItemVote title={"Noter l'application"}  last={false}
                                                       alone={true}/>
-                            <OptionItem title={'A propos / Contact'} bloc_under={4} last={false}
+                            <OptionItem title={'À propos / Contact'} bloc_under={4} last={false}
                                         alone={true}/>
                                     </View>}
                             <OptionItemLogout title={'Déconnexion'} loginOut={this.loginOut.bind(this)} last={true}

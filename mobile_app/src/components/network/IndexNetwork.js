@@ -17,7 +17,7 @@ import * as SearchActions    from './../../actions/SearchActions';
 import * as SessionActions    from './../../actions/SessionActions';
 import {connect}            from 'react-redux';
 
-import LoadingOverlay from 'react-native-loading-overlay';
+import Loading from './../default/Loading'
 import NavigationBar from 'react-native-navbar';
 import MenuTab from './../default/MenuTab';
 import NetworkFb from './../login/NetworkFb';
@@ -228,9 +228,8 @@ class IndexNetwork extends React.Component {
 
         var connect = null;
 
-        if (typeof this.props.user !== "undefined" && typeof this.props.user.provider !== "undefined" && this.props.user.provider == "facebook") {
-            connect = <NetworkFb/>;
-        }
+             connect = <NetworkFb/>;
+
 
         if (this.props.user !== null && this.state.list_default == null && this.props.my_network !== null && typeof this.props.my_network.abos !== "undefined" && this.props.new_suggestion_network != null && Object.keys(this.props.new_suggestion_network).length > 0) {
             to_show = <View
@@ -262,7 +261,8 @@ class IndexNetwork extends React.Component {
 
 
             <View style={styles.bg}>
-
+                {  (this.props.isRequesting) && !this.state.is_typing &&
+                <Loading visible={true} text=""/>}
                     <NavigationBar
                         style={styles.navbar}
                         title={titleConfig}
@@ -306,8 +306,7 @@ class IndexNetwork extends React.Component {
                                 paddingBottom: 20
                             }}>Résultats de recherche</Text>}
                             {to_show}
-                            {  (this.props.isRequesting) && !this.state.is_typing &&
-                        <LoadingOverlay visible={true} text=""/>}
+
                         </View>
                     </ScrollView>
                     <View style={{position: "absolute", bottom: 0, left: 0, right: 0}}>

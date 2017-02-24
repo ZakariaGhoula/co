@@ -286,14 +286,6 @@ class Discover extends React.Component {
                                                                                          name="ios-search"/></TouchableOpacity>;
 
 
-        if ((   this.props.newsfeed == null && !this.state.loaded  )) {
-            return (
-
-                <View style={{flex: 1, justifyContent: 'center', width: null, height: null}}>
-                <LoadingOverlay visible={true} text=""/>
-                </View>
-            )
-        }
 
 
         return (

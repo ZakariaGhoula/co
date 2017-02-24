@@ -48,6 +48,7 @@ export default class Search extends React.Component {
             for (var i in recipes) {
                 var list_tags = recipes[i].tags;
                 if (recipes[i].title.toLowerCase().includes(text.toLowerCase())) {
+
                     retour_list.push(recipes[i])
                 }
                 for (var j in list_tags) {

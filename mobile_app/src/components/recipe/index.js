@@ -261,7 +261,13 @@ class MyRecipe extends React.Component {
         var leftButtonConfig = <TouchableOpacity style={{marginTop:15,marginLeft:10}} onPress={this.menuLeft}><Image
             source={require('image!./../../img/moncookout/back.png')}/></TouchableOpacity>
 
-        var rightButtonConfig = <ModalPicker
+        var rightButtonConfig =
+            <TouchableOpacity style={{marginTop:-18,marginRight:10}} onPress={()=>Actions.updaterecepie({recepie: this.props.recipe})}><Image
+                style={{marginTop:0,width:22}} resizeMode={"contain"}
+                source={require('image!./../../img/moncookout/edit.png')}/></TouchableOpacity>
+
+
+            /*<ModalPicker
             data={data}
             style={{marginTop:-18,marginRight:10}}
             optionStyle={{height:50,justifyContent:"center"}}
@@ -269,7 +275,7 @@ class MyRecipe extends React.Component {
             cancelText="Annuler"
             onChange={(option)=>{ this.handleSelectModal(option.key) }}><Image
             style={{marginTop:0,width:22}} resizeMode={"contain"}
-            source={require('image!./../../img/moncookout/edit.png')}/></ModalPicker>;
+            source={require('image!./../../img/moncookout/edit.png')}/></ModalPicker>;*/
         if (this.props.user == null || this.props.recipe == null) {
             return (
                 <View style={styles.bg}>

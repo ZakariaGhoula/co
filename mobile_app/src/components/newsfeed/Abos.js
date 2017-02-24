@@ -21,7 +21,6 @@ import * as NewsfeedActions    from './../../actions/NewsfeedActions';
 import {connect}            from 'react-redux';
 import NewsfeedItem from './NewsfeedItem';
 
-import LoadingOverlay from 'react-native-loading-overlay';
 import {GoogleAnalyticsTracker} from 'react-native-google-analytics-bridge';
 //import Carousel from 'react-native-carousel';
 class Abos extends React.Component {
@@ -61,7 +60,10 @@ class Abos extends React.Component {
     }
 
     componentDidMount() {
+
+        this.props.actions.retrieveMyNetwork(this.props.token);
         if (this.props.user == null) {
+
             this.props.actions.retrieveDataRequest(this.props.token);
         }
         if (this.props.newsfeed_abos == null) {
@@ -102,6 +104,7 @@ class Abos extends React.Component {
             || nextProps.newsfeed_abos_limit !== this.props.newsfeed_abos_limit
             || nextState.search_open !== this.state.search_open
             || nextState.loaded !== this.state.loaded
+            || nextState.my_network !== this.state.my_network
             || nextState.data_to_show !== this.state.data_to_show
         )
     }
@@ -234,18 +237,7 @@ class Abos extends React.Component {
                                                   onPress={this.search.bind(this)}><Icon size={22}
                                                                                          name="ios-search"/></TouchableOpacity>;
 
-
-        if ((   this.props.newsfeed_abos == null && !this.state.loaded  )) {
-            return (
-
-                <View style={{flex: 1, justifyContent: 'center', width: null, height: null}}>
-                <LoadingOverlay visible={true} text=""/>
-                </View>
-            )
-
-
-        }
-        else if ((this.props.newsfeed_abos == null || this.props.newsfeed_abos !== null && Object.keys(this.props.newsfeed_abos).length == 0) && this.state.loaded) {
+         if ((this.props.newsfeed_abos == null || this.props.newsfeed_abos !== null && Object.keys(this.props.newsfeed_abos).length == 0) && this.props.my_network!==null && typeof this.props.my_network.abos !=="undefined" && this.props.my_network.abos.length ==0 && this.state.loaded) {
 
 
             return (
@@ -275,6 +267,44 @@ class Abos extends React.Component {
                                     backgroundColor: 'transparent'
                                 }}>
                                     Rechercher des amis
+                                </Text>
+
+                            </View>
+                        </TouchableOpacity>
+                    </Image>
+                </View>
+
+            );
+        }  else if ((this.props.newsfeed_abos == null || this.props.newsfeed_abos !== null && Object.keys(this.props.newsfeed_abos).length == 0) && this.props.my_network!==null && typeof this.props.my_network.abos !=="undefined"  && this.props.my_network.abos.length >0 && this.state.loaded) {
+
+
+            return (
+                <View style={styles.bg}>
+                    <Image source={require('image!./../../img/background/default/tapis.png')}
+                           style={{flex: 1, height: null, width: null}}>
+                        <TouchableOpacity onPress={() => Actions.indexNetwork()}
+                                          style={{paddingTop: 120, width: null, height: null}}>
+                            <View style={{flex: 1, height: height - 120}}>
+                                <Text style={{
+                                    fontFamily: 'Guardi-Roman',
+                                    fontSize: 16,
+                                    marginBottom: 15,
+                                    textAlign: 'center',
+                                    color: '#000',
+                                    backgroundColor: 'transparent'
+                                }}>
+                                   Les utilisateurs, que tu suis, {'\n'} n'ont pas encore posté de recettes !
+                                </Text>
+
+                                <Text style={{
+                                    fontFamily: 'Guardi-Roman',
+                                    textAlign: 'center',
+                                    color: '#000',
+                                    fontSize: 16,
+                                    textDecorationLine: 'underline',
+                                    backgroundColor: 'transparent'
+                                }}>
+                                    Rechercher de nouveaux amis
                                 </Text>
 
                             </View>
@@ -340,6 +370,7 @@ const mapStateToProps = (state) => ({
     user: state.session.user,
     newsfeed_abos: state.newsfeed.newsfeed_abos,
 
+    my_network: state.session.my_network,
     newsfeed_abos_page: state.newsfeed.newsfeed_abos_page,
     newsfeed_abos_limit: state.newsfeed.newsfeed_abos_limit,
 });

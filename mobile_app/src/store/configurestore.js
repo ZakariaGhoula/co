@@ -16,7 +16,7 @@ import createLogger from 'redux-logger';
 export default function configureStore(initialState) {
 
     let createStoreWithMiddleware;
-    const logger = createLogger();
+    //const logger = createLogger();
     const reducer = combineReducers({  // can be mounted as any property. Later you can use this prop to access state slices in mapStateToProps
         session,
         config,
@@ -31,7 +31,7 @@ export default function configureStore(initialState) {
 
     });
 
-    const middleware = applyMiddleware(promiseMiddleware,loadingMiddleware(),logger);
+    const middleware = applyMiddleware(promiseMiddleware,loadingMiddleware());
     createStoreWithMiddleware = compose(middleware);
     const store = createStoreWithMiddleware(createStore)(reducer, initialState);
     return store;

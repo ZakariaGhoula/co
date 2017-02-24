@@ -74,7 +74,7 @@ export default class ShowBasics extends React.Component {
 
         if (this.props.user != null && this.props.user.media != null && this.props.user.media.profile_pi != "") {
 
-            var profilePicture = <View style={[{position:"relative"},styles.pict]}><CachedImage
+            var profilePicture = <View style={[{position:"relative"},styles.pict]}><Image
 
                 source={{uri:APIRoot+"/images/users/"+this.props.user.media.profile_pi}}
                 style={[styles.pict]}/>

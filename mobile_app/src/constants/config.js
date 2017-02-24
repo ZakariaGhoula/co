@@ -35,7 +35,7 @@ export const OPTIONS_CIVILITE = [
 
 export const OPTIONS_LEVEL = [
     {
-        label: 'Un cuisinier un peu',
+        label: 'Un peu',
         value: '1'
     },
     {

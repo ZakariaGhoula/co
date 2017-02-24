@@ -12,6 +12,7 @@ import * as VisitorActions    from './../../actions/VisitorActions';
 import { connect }            from 'react-redux';
 
 
+import Loading from './../default/Loading'
 import LoadingOverlay from 'react-native-loading-overlay';
 import NavigationBar from 'react-native-navbar';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -47,7 +48,6 @@ class TheCookout extends React.Component {
 
 
         if (this.props.id_user_external != null) {
-
             this.props.actions_visitor.retrieveProfileVisitor(this.props.token, this.props.id_user_external);
             this.props.actions_visitor.retrieveVisitorNetwork(this.props.token, this.props.id_user_external);
         }
@@ -111,6 +111,7 @@ class TheCookout extends React.Component {
         if ((  this.props.user_external == null || this.props.network_visitor == null)) {
             return (
                 <View style={styles.bg}>
+                    <Loading/>
                     <Image source={require('image!./../../img/background/default/tapis.png')}
                            style={{flex:1,height:null,width:null}}>
                         <NavigationBar
@@ -119,7 +120,7 @@ class TheCookout extends React.Component {
                             leftButton={leftButtonConfig}
                             tintColor={"#fff"}/>
                         <View style={{flex:1,justifyContent:'center',width:null,height:null}}>
-                            <LoadingOverlay visible={true} text=""/>
+
                         </View>
                         <View style={{position:"absolute",bottom:0,left:0,right:0}}>
                             <MenuTab option_back={this.props.name} page={this.props.name}/>
@@ -129,6 +130,7 @@ class TheCookout extends React.Component {
         }
         return (
             <View style={styles.bg}>
+                {this.props.isRequesting && <Loading/>}
                 <Image source={require('image!./../../img/background/default/tapis.png')}
                        style={{flex:1,height:null,width:null}}>
 
@@ -184,7 +186,8 @@ const mapStateToProps = (state) => ({
     user: state.session.user,
     user_external: state.visitor.profile_visitor,
     network_visitor: state.visitor.network_visitor,
-    isRequesting: state.loading.shown
+    isRequesting: state.loading.shown,
+
 });
 
 const mapDispatchToProps = (dispatch) => ({

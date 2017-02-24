@@ -80,14 +80,12 @@ export default class NetworkProfilsSearch extends React.Component {
         var profilePicture = null;
 
         if (this.props.user != null && typeof this.props.user.path !== "undefined" && this.props.user.path != null && this.props.user.path != "") {
-            profilePicture =
-                <CachedImage source={{uri:APIRoot+"/images/users/"+this.props.user.path }} style={styles.pict} />
-          /*  profilePicture =
+             profilePicture =
                 <Image source={{uri:APIRoot+"/images/users/"+this.props.user.path }} style={styles.pict}   onLoadEnd ={(e) => this.setState({loadImg: false})}>
                     {this.state.loadImg &&  <View
                         style={{backgroundColor:'rgba(0,0,0,0.4)',borderRadius :width*0.20,alignItems:"center",justifyContent:"center",top:0,height:width*0.20,width:width*0.20}}><ActivityIndicator animating={ this.state.loadImg }/></View>}
                 </Image>
-        */}
+       }
         else if (this.props.user != null && this.props.user.path == "") {
             if (this.props.user.gender != null && this.props.user.gender == "female") {
                 var profilePicture = <Image source={require('./../../../img/default_img/placeholder-women.png')}

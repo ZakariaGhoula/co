@@ -36,11 +36,7 @@ export default class BlockRecipe extends React.Component {
     }
 
 
-    shouldComponentUpdate(nextProps, nextState) {
 
-        return (this.state.thumbnailOpacity !== nextState.thumbnailOpacity
-        || this.state.thumbnailMain !== nextState.thumbnailMain)
-    }
 
     render() {
         var {height, width} = Dimensions.get('window');

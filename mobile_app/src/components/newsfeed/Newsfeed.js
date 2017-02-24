@@ -16,6 +16,7 @@ import TabNewsfeed from './TabNewsfeed';
 import Discover from './Discover';
 import Abos from './Abos';
 
+import Loading from './../default/Loading'
 
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import {GoogleAnalyticsTracker} from 'react-native-google-analytics-bridge';
@@ -59,7 +60,8 @@ class Newsfeed extends React.Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         return (
-            nextProps.user !== this.props.user
+            nextProps.user !== this.props.user ||
+            nextProps.isRequesting !== this.props.isRequesting
             || nextState.loaded !== this.state.loaded
         )
     }
@@ -134,6 +136,7 @@ class Newsfeed extends React.Component {
 
 
             <View style={styles.bg}>
+                {this.props.isRequesting && <Loading/>}
                 <Image source={require('image!./../../img/background/default/tapis.png')}
                        style={{flex: 1, height: null, width: null}}>
                     <NavigationBar
@@ -170,6 +173,7 @@ const mapStateToProps = (state) => ({
     user: state.session.user,
     newsfeed: state.newsfeed.newsfeed,
 
+    isRequesting: state.loading.shown,
     newsfeed_page: state.newsfeed.newsfeed_page,
     newsfeed_limit: state.newsfeed.newsfeed_limit,
 });

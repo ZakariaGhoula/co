@@ -80,7 +80,9 @@ export default class MyRecipes extends React.Component {
 
         var padding = ((width * 0.06) );
         var nbr_recipes = Object.keys(this.state.list_default_recipe).length;
+
         var recipes = (this.props.my_recipes);
+
         var user = this.props.user;
         var height_image = width * (121 / 320);
 
@@ -127,6 +129,7 @@ export default class MyRecipes extends React.Component {
         else {
             list_to_show = <View style={{flex:1}}>
                 {this.state.list_default_recipe.map(function (recipe, index) {
+
                     return ( <Swipeout style={{height:( (height_image )),marginBottom: 7}} right={[{
             text: 'X \nSupprimer',
             backgroundColor: '#a91d31',

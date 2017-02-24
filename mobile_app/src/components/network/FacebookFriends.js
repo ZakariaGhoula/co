@@ -16,7 +16,7 @@ import {bindActionCreators} from 'redux';
 import * as SessionActions    from './../../actions/SessionActions';
 import {connect}            from 'react-redux';
 
-import LoadingOverlay from 'react-native-loading-overlay';
+import Loading from './../default/Loading';
 import NavigationBar from 'react-native-navbar';
 import MenuTab from './../default/MenuTab';
 import NetworkProfilsSearch from './NetworkProfilsSearch';
@@ -159,7 +159,8 @@ class FacebookFriends extends React.Component {
         /*     <Image style={{marginBottom: 2, width: 92}} resizeMode={"contain"}
          source={require('image!./../../img/season/logo.png')}/>;*/
 
-        var titleConfig = <Text style={{marginBottom: 2, fontFamily: 'Guardi-Roman', fontSize: 16}}>Amis Facebook</Text>;
+        var titleConfig = <Text style={{marginBottom: 2, fontFamily: 'Guardi-Roman', fontSize: 16}}>Amis
+            Facebook</Text>;
         var leftButtonConfig = <TouchableOpacity style={{marginTop: 15, marginLeft: 10}} onPress={this.menuLeft}><Image
             source={require('image!./../../img/moncookout/back.png')}/></TouchableOpacity>
 
@@ -184,10 +185,13 @@ class FacebookFriends extends React.Component {
                     return (<NetworkProfilsSearch key={index} user={this.props.facebook_network[user]}/>)
                 }, this)}</View>;
         }
+
+
         return (
 
 
             <View style={styles.bg}>
+                {((this.props.isRequesting)) && <Loading/>}
                 <NavigationBar
                     style={styles.navbar}
                     title={titleConfig}
@@ -195,12 +199,11 @@ class FacebookFriends extends React.Component {
                     tintColor={"#fff"}/>
 
                 <ScrollView style={{flex: 1, paddingTop: 4, paddingBottom: 100}}>
-                         <View style={{flex: 1, paddingBottom: 100}}>
+                    <View style={{flex: 1, paddingBottom: 100}}>
 
-                            {to_show}
-                            {  (this.props.isRequesting) &&
-                        <LoadingOverlay visible={true} text=""/>}
-                        </View>
+                        {to_show}
+
+                    </View>
                 </ScrollView>
                 <View style={{position: "absolute", bottom: 0, left: 0, right: 0}}>
                     <MenuTab option_back={this.props.name} page={"moncookout"}/>
